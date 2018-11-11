@@ -27,6 +27,7 @@ module debug
         END IF
         WRITE(debugfile, '(a, a)', advance="no") time, " : "
         WRITE(debugfile, '(a)') dbg
+        FLUSH(debugfile)
 
 #endif
 
@@ -36,6 +37,7 @@ module debug
     subroutine debug_close()
 #ifdef debug
         CALL debug_log("closing debug file")
+        FLUSH(debugfile)
         CLOSE(debugfile)
 #endif
     END subroutine debug_close

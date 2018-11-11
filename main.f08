@@ -27,13 +27,13 @@ program fortiche
         ! get input
         READ(*, '(a)') inbuffer     ! because apparently you can't have allocation on read so you can't just read "input". meh.
         input = TRIM(inbuffer)
-        CALL debug_log(input)
+        CALL debug_log("<- " // input)
         
         ! main parsing stuff
 
         !uci
         IF(input .EQ. 'uci') THEN
-            CALL debug_log("   printing uci info")
+            CALL debug_log("  -> printing uci info")
             WRITE(*, '(a, a, a, a)') "id name ", name, " ", version
             WRITE(*, '(a, a)') "id author ", author
             !add more stuff before uciok if required
@@ -45,9 +45,12 @@ program fortiche
             WRITE(*, '(g0)') "readyok"
             
         !ucinewgame
+        ELSE IF(input .EQ. 'ucinewgame') THEN
+            CALL debug_log("  -> not implemented : reset board and start a new game")
         
         !position
-        
+        ELSE IF(input(1:8) == 'position') THEN
+            CALL debug_log("  -> not implemented : set position")
         !go
         
             !ponder
@@ -89,7 +92,7 @@ program fortiche
         
         !quit -> exit main loop
         ELSE IF(input .EQ. 'quit') THEN
-            CALL debug_log("   quit command issued, exiting main loop")
+            CALL debug_log("  -> quit command issued, exiting main loop")
             EXIT
         
         !non uci command
@@ -97,8 +100,13 @@ program fortiche
             
         !unknown command
         ELSE
-            CALL debug_log("   ignoring invalid command")
+            CALL debug_log("  -> ignoring invalid command")
         END IF
+
+        !temporary, filling the input with garbage to solve some stupid problem
+        input = "-------------------"
+        inbuffer = "------------------"
+        
 
     end do
     
