@@ -27,8 +27,10 @@ program fortiche
     ponder = .FALSE.
     
     
-    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     ! main loop (responding to UCI commands)
+    ! http://wbec-ridderkerk.nl/html/UCIProtocol.html
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     CALL debug_log("Entering main loop")
     DO
     
@@ -57,7 +59,7 @@ program fortiche
         ELSE IF(input .EQ. 'ucinewgame') THEN
             CALL debug_log("  -> not implemented : reset board and start a new game")
         
-        !position
+        !position [fen | startops] ...
         ELSE IF((input_length >= 8) .AND. input(1:8) == 'position') THEN
             CALL debug_log("  -> not implemented : position")
 
@@ -77,11 +79,11 @@ program fortiche
             ELSE IF((input_length >= 14) .AND. input(1:14) == 'go searchmoves') THEN
                 CALL debug_log("  -> not implemented : go searchmoves")
             
-            !movetime ... (in ms)
+            !movetime x (in ms)
             ELSE IF((input_length >= 11) .AND. input(1:11) == 'go movetime') THEN
                 CALL debug_log("  -> not implemented : set movetime in ms") 
             
-            !depth ... (search x plies only)
+            !depth x (search x plies only)
             ELSE IF ((input_length >= 8) .AND. input(1:8) == "go depth") THEN
                 CALL debug_log("  -> not implemented : search x plies only")
             
@@ -89,13 +91,37 @@ program fortiche
             ELSE IF(input == 'go infinite') THEN
                 CALL debug_log("  -> not implemented : search intil stop command is issued")
             
-            !wtime ... (in ms)
+            !wtime x (in ms)
             ELSE IF((input_length >=  8) .AND. input(1:8) == "go wtime") THEN
-                CALL debug_log("  -> not implemented : wtime")
+                CALL debug_log("  -> not implemented : go wtime")
 
-            !btime
+            !btime x
             ELSE IF((input_length >=  8) .AND. input(1:8) == "go btime") THEN
-                CALL debug_log("  -> not implemented : btime")
+                CALL debug_log("  -> not implemented : go btime")
+                
+            !movestogo x
+            ELSE IF((input_length >= 12) .AND. input(1:12) == "go movestogo") THEN
+                CALL debug_log("  -> not implemented : go movestogo")
+            
+            !nodes x
+            ELSE IF((input_length >= 8) .AND. input(1:8) == "go nodes") THEN
+                CALL debug_log("  -> not implemented : go nodes")
+            
+            !mate x
+            ELSE IF((input_length >= 7) .AND. input(1:7) == "go mate") THEN
+                CALL debug_log("  -> not implemented : go mate")
+            
+            !winc x
+            ELSE IF((input_length >= 7) .AND. input(1:7) == "go winc") THEN
+                CALL debug_log("  -> not implemented : go winc")
+            
+            !binc x
+            ELSE IF((input_length >= 7) .AND. input(1:7) == "go binc") THEN
+                CALL debug_log("  -> not implemented : go binc")
+            
+            !???
+            ELSE
+                CALL debug_log("  -> invalid go ... command")
             
             END IF
             
@@ -111,11 +137,11 @@ program fortiche
                 ponder = .FALSE.
             END IF
         
-        !setoption
+        !setoption name ... [value ...]
         ELSE IF((input_length >= 9) .AND. input(1:9) == 'setoption') THEN
             CALL debug_log("  -> not implemented : setoption")
         
-            !thread
+            !thread ... (setup number of thread)
             
             !hash
             
