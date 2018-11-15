@@ -45,8 +45,8 @@ program fortiche
         !uci
         IF(input .EQ. 'uci') THEN
             CALL debug_log("  -> printing uci info")
-            WRITE(*, '(a, a, a, a)') "id name ", name, " ", version
-            WRITE(*, '(a, a)') "id author ", author
+            WRITE(*, '(a)') "id name " // name // " " // version
+            WRITE(*, '(a)') "id author " // author
             !add more stuff before uciok if required
             WRITE(*, '(a)') "uciok"
 
