@@ -23,9 +23,9 @@ module debug
         IF(debugIsOpen .EQV. .false.) THEN
             OPEN(unit=DEBUGFILE,file="debug.txt",action="write",status="replace")
             debugIsOpen = .true.
-            WRITE(debugfile, '(a,a,a,a)') "** opening debug file : ", date, " / ", time
+            WRITE(debugfile, '(a)') "** opening debug file : " // date // " / " // time
         END IF
-        WRITE(debugfile, '(a, a)', advance="no") time, " : "
+        WRITE(debugfile, '(a)', advance="no") time // " : "
         WRITE(debugfile, '(a)') dbg
         FLUSH(debugfile)
 
