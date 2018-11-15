@@ -18,13 +18,15 @@ program fortiche
     
     ! engine variable
     LOGICAL :: ponder
+    LOGICAL :: isStopped
     
     
     !INTEGER (KIND=8) :: bitfield                ! a 64bit signed integer
     
     ! init stuff here
-    CALL debug_log("Initializing Fortiche engine")
+    CALL debug_log("Initializing " // name // " engine version " // version)
     ponder = .FALSE.
+    isStopped = .FALSE.
     
     
     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -41,6 +43,12 @@ program fortiche
         CALL debug_log("<- " // input)
         
         ! main parsing stuff
+        
+        ! ignore commands while running except : stop, quit, ponderhit
+        IF((isStopped .EQV. .FALSE.) .AND. ((input /= "stop") .AND. (input /= "quit") .AND. (input /= "ponderhit"))) THEN
+            CALL debug_log("  -> " // input // " was called but ignored because the engine is not stopped")
+            CYCLE
+        END IF
 
         !uci
         IF(input .EQ. 'uci') THEN
@@ -64,7 +72,7 @@ program fortiche
             CALL debug_log("  -> not implemented : position")
 
         !go ...
-        ELSE IF((LEN(input) >= 2) .AND. input(1:2) == 'go') THEN
+        ELSE IF((input_length >= 2) .AND. (input(1:2) == 'go') .AND. (isStopped .EQV. .TRUE.)) THEN
         
             !go ponder
             IF(input == 'go ponder') THEN
@@ -135,6 +143,12 @@ program fortiche
             IF(ponder .EQV. .TRUE.) THEN
                 CALL debug_log("  -> the engine was pondering, stop pondering")
                 ponder = .FALSE.
+            END IF
+            IF(isStopped .EQV. .FALSE.) THEN
+                CALL debug_log("  -> set isStop to true")
+                isStopped = .TRUE.
+            ELSE
+                CALL debug_log("  -> engine was already stopped")
             END IF
         
         !setoption name ... [value ...]
