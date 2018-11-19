@@ -26,7 +26,7 @@ program fortiche
     ! init stuff here
     CALL debug_log("Initializing " // name // " engine version " // version)
     ponder = .FALSE.
-    isStopped = .FALSE.
+    isStopped = .TRUE.
     
     
     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
